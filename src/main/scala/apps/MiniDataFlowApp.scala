@@ -38,7 +38,7 @@ object MiniDataFlowApp extends App {
 
   println("Pipeline run!")
 
-  val splitIntoWords = new DoFn[String, String]() {
+  lazy val splitIntoWords = new DoFn[String, String]() {
     override def processElement(c: DoFn[String, String]#ProcessContext) {
       val words = c.element().split("[^a-zA-Z']+")
       for (word <- words) {
@@ -49,13 +49,13 @@ object MiniDataFlowApp extends App {
     }
   }
 
-  val extractWords = new DoFn[String, String]() {
+  lazy val extractWords = new DoFn[String, String]() {
     override def processElement(c: DoFn[String, String]#ProcessContext) {
       c.element.split("[^a-zA-Z']+").filter(_.nonEmpty).map(_ => c.output(_))
     }
   }
 
-  val formatOutput = new DoFn[KV[String, java.lang.Long], String]() {
+  lazy val formatOutput = new DoFn[KV[String, java.lang.Long], String]() {
     override def processElement(c: DoFn[KV[String, java.lang.Long], String]#ProcessContext) {
       c.output(c.element.getKey + ": " + c.element.getValue)
     }
