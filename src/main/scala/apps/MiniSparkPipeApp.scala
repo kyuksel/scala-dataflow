@@ -11,19 +11,20 @@ object MiniSparkPipeApp extends App {
   println("Running app...")
 
   // initialise spark context
-  val conf = new SparkConf().setAppName("HelloWorld").setMaster("local")
+  val conf = new SparkConf().setAppName("MiniSparkPipe").setMaster("local")
   val sc = new SparkContext(conf)
 
   // do stuff
-  val data = List("hi","hello","how","are","you")
-  val dataRDD = sc.makeRDD(data)
-  val echoScriptPath = "/Users/kyuksel/GitHubClones/scala-dataflow/echo.sh"
-  val echoCommand = "echo \"hola amigo\""
-  val tabixHeaderExtractionCommand = "tabix -H /Users/kyuksel/BurdenFiles/v3.clean.1000.vcf.gz"
-  //val pipeRDD = dataRDD.pipe(echoCommand)
-  //val pipeRDD = dataRDD.pipe(echoScriptPath)
-  val pipeRDD = dataRDD.pipe(tabixHeaderExtractionCommand)
-  val output = pipeRDD.collect()
+  val vcf = sc.parallelize(List(
+    (("s1", "v1"), 0),
+    (("s1", "v2"), 2),
+    (("s2", "v2"), 1),
+    (("s2", "v4"), 1),
+    (("s2", "v3"), 0),
+    (("s3", "v1"), 0),
+    (("s3", "v3"), 2)))
+
+  // find singletons
 
   // terminate spark context
   sc.stop()
