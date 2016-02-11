@@ -12,7 +12,7 @@ bin/
 tmp/
 test-result
 server.pid
-*.txt
+*.txt*
 *.iml
 *.eml
 *~

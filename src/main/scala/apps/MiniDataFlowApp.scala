@@ -19,13 +19,8 @@ object MiniDataFlowApp extends App {
 
   // pipeline definition
   val options = PipelineOptionsFactory.create().as(classOf[DirectPipelineOptions])
-  //val options = PipelineOptionsFactory.create().as(classOf[DataflowPipelineOptions])
   options.setProject("Scala Dataflow")
   options.setRunner(classOf[DirectPipelineRunner])
-  //options.setStagingLocation("/Users/kyuksel/GitHubClones/scala-dataflow/staging")
-  options.setTestSerializability(true)
-  options.setTestEncodability(true)
-  options.setTestUnorderedness(true)
 
   val p: Pipeline = Pipeline.create(options)
   p.apply(TextIO.Read.from("/Users/kyuksel/GitHubClones/scala-dataflow/kinglear.characters.txt"))
@@ -40,9 +35,9 @@ object MiniDataFlowApp extends App {
 
   lazy val splitIntoWords = new DoFn[String, String]() {
     override def processElement(c: DoFn[String, String]#ProcessContext) {
-      val words = c.element().split("[^a-zA-Z']+")
+      val words = c.element.split("[^a-zA-Z']+")
       for (word <- words) {
-        if (!word.isEmpty()) {
+        if (!word.isEmpty) {
           c.output(word)
         }
       }
@@ -51,7 +46,7 @@ object MiniDataFlowApp extends App {
 
   lazy val extractWords = new DoFn[String, String]() {
     override def processElement(c: DoFn[String, String]#ProcessContext) {
-      c.element.split("[^a-zA-Z']+").filter(_.nonEmpty).map(_ => c.output(_))
+      c.element.split("[^a-zA-Z']+").filter(_.nonEmpty).foreach(c.output)
     }
   }
 
