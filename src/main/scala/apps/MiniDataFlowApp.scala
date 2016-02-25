@@ -2,10 +2,11 @@ package apps
 
 import com.google.cloud.dataflow.sdk.Pipeline
 import com.google.cloud.dataflow.sdk.io.TextIO
-import com.google.cloud.dataflow.sdk.options.{DirectPipelineOptions, DataflowPipelineOptions, PipelineOptionsFactory}
+import com.google.cloud.dataflow.sdk.options.{DirectPipelineOptions, PipelineOptionsFactory}
 import com.google.cloud.dataflow.sdk.runners.DirectPipelineRunner
 import com.google.cloud.dataflow.sdk.transforms.{Count, DoFn, ParDo}
 import com.google.cloud.dataflow.sdk.values.KV
+import org.apache.log4j.BasicConfigurator
 
 /**
  * Created on: 2/3/16
@@ -15,6 +16,8 @@ import com.google.cloud.dataflow.sdk.values.KV
  * @author Kaan Yuksel 
  */
 object MiniDataFlowApp extends App {
+  BasicConfigurator.configure()
+
   println("Creating pipeline...")
 
   // pipeline definition
